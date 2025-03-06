@@ -5,22 +5,28 @@
 #Require -Version 7.5
 
 # Check where the user wants the folder to be created
-$LocationCheck = Read-Host 'Where do you want to create the Semester folder? Enter:
-"Home" for OneDrive Home Root Folder
-"Work" for OneDrive Commercial Root Folder
-A file Path for a Custom Location'
+$LocationCheck = Read-Host 'Where do you want to create the semester folder? Enter:
+"Home" for OneDrive Home root folder
+"Work" for OneDrive Commercial root folder
+Leave blank for a custom folder location.
+
+Input:'
 
 # Read LocationCheck and Set as Path
-if ($LocationCheck -eq "Home") {
-    $PathLoc = $env:OneDrive
+switch ($LocationCheck) {
+    "Home" {$PathLoc = $env:OneDrive}
+    "Work" {$PathLoc = $env:OneDriveCommercial}
+    Default {
+        $PathLoc = Read-Host "Please enter the custom folder locaton"
+        $PathTest = Test-Path $PathLoc
+        if (!$PathTest) {
+            New-Item -Path $PathLoc -ItemType Directory
+            Write-Host "Created: $PathLoc"
+        }
+    }
 }
-elseif ($LocationCheck -eq "Work") {
-    $PathLoc = $env:OneDriveCommercial
-}
-else {
-    $PathLoc = $LocationCheck
-}
-Write-Output "The Location Path is: $PathLoc"
+
+Write-Output "The folder path is: $PathLoc"
 
 # Create Root Sememster Folder
 $Semester = Read-Host "What Semester are you creating folders for?"
@@ -29,26 +35,28 @@ Write-Output " Created: $Path\Semester $Semester\"
 
 # Check if User wants weekly folders
 do {
-    $WeekFolderCheck = Read-Host "Do you want Week Folders? Y/N"
+    $WeekFolderCheck = Read-Host "Do you want Week folders? Y/N"
+    switch ($WeekFolderCheck) {
+        Y {Write-Host "Continuing with creating week folders."}
+        N {Write-Host "Skipping creating week folders."}
+        Default {Write-Host "Invalid entry. Please enter again"}
+    }
 } until (
-    $WeekFolderCheck -eq 'Y' -or $WeekFolderCheck -eq 'N'
+    $WeekFolderCheck -eq 'Y' -xor $WeekFolderCheck -eq 'N'
 )
 
+# If WeekfolderCheck is Y, Determine how many weeks a semester is.
 if ($WeekFolderCheck -eq "Y") {
     # Check how many weeks the semester is
-    [int]$Weeks = Read-Host "How many weeks is your Semester? (Leave Blank for Default: 13 Weeks)"
+        [Int]$Weeks = Read-Host "How many weeks is your Semester? (Leave Blank for Default: 14 Weeks)"
 
-    if ($Weeks -eq 13 -xor $Weeks -eq 0 ) {
-        $Weeks = 13
+    if ($Weeks -eq 14 -xor $Weeks -eq 0 ) {
+        $Weeks = 14
         Write-Host "Using default weeks setting: $Weeks"
     }
     else {
         Write-Host "Weeks setting set to: $Weeks"
     }
-
-}
-else {
-    Write-Host "Continuing on without creation of Week Folders"
 }
 
 # Create Class Folders
