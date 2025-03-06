@@ -10,7 +10,7 @@ $LocationCheck = Read-Host 'Where do you want to create the semester folder? Ent
 "Work" for OneDrive Commercial root folder
 Leave blank for a custom folder location.
 
-Input:'
+Input'
 
 # Read LocationCheck and Set as Path
 switch ($LocationCheck) {
