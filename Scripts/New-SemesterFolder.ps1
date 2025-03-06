@@ -1,5 +1,5 @@
 # New-SemesterFolder
-# Creates Folders for College Semester in OneDrive folder, Including Week Folders.
+# Creates Folders for College Semester in OneDrive folders and Custom locations, Including Week Folders.
 # Joseph Wahba
 
 #Require -Version 7.5
@@ -17,16 +17,17 @@ switch ($LocationCheck) {
     "Home" {$PathLoc = $env:OneDrive}
     "Work" {$PathLoc = $env:OneDriveCommercial}
     Default {
-        $PathLoc = Read-Host "Please enter the custom folder locaton"
-        $PathTest = Test-Path $PathLoc
-        if (!$PathTest) {
-            New-Item -Path $PathLoc -ItemType Directory
-            Write-Host "Created: $PathLoc"
+        Add-Type -AssemblyName System.Windows.Forms
+        $FolderBrowser = New-Object System.Windows.Forms.FolderBrowserDialog -Property @{
+            RootFolder            = "MyComputer"
+            Description           = "$Env:ComputerName - Select a folder"
         }
+        $Null = $FolderBrowser.ShowDialog()
+        $PathLoc = $FolderBrowser.SelectedPath
     }
 }
 
-Write-Output "The folder path is: $PathLoc"
+Write-Host "The folder path is: $PathLoc"
 
 # Create Root Sememster Folder
 $Semester = Read-Host "What Semester are you creating folders for?"
