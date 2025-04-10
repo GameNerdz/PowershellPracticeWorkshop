@@ -1,5 +1,5 @@
 # New-SemesterFolder
-# Creates Folders for College Semester in OneDrive folders and Custom locations, Including Week Folders.
+# Creates Folders for College Semester in OneDrive folders and Custom locations, such as class folders, week folders and assignment folders.
 # Joseph Wahba
 
 # Settings Phase
