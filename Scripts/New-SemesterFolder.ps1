@@ -82,29 +82,43 @@ do {
 
 # Creation Phase
 $Semester = Read-Host "What semester are you creating folders for?"
-New-Item -Path "$PathLoc\" -name "Semester $Semester" -ItemType Directory
-Write-Output " Created: $Path\Semester $Semester\"
+$TestPath = Test-Path -Path "$PathLoc\Semester $Semester\"
+if ($TestPath -eq $false) {
+    New-Item -Path "$PathLoc\" -name "Semester $Semester" -ItemType Directory
+    Write-Output " Created: $Path\Semester $Semester\"
+} else {
+    Write-Output "Location Exists: Skipping over creating folder"
+}
 
 do {
     $Class = Read-Host 'Enter your class name or the course code. Enter "End" to end'
     if ($Class -ne "End") {
-        New-Item -Path "$PathLoc\Semester $Semester\" -Name $Class -ItemType Directory
-        Write-Output " Created: $Path\Semester $Semester\$Class"
+        $TestPath = Test-Path -Path "$PathLoc\Semester $Semester\$Class\"
+        if ($TestPath -eq $false) {
+            New-Item -Path "$PathLoc\Semester $Semester\" -Name $Class -ItemType Directory
+            Write-Output " Created: $Path\Semester $Semester\$Class\"
+        }
         if ($WeekFolderCheck -eq "Y") {
             for ($i = 1; $i -le $Weeks; $i++) {
-                New-Item -Path "$PathLoc\Semester $Semester\$Class\" -Name "Week $i" -ItemType Directory
-                if ($AssignmentFolderCheck -eq "W") {
-                    New-Item -Path "$PathLoc\Semester $Semester\$Class\Week $i" -Name "Assignments" -ItemType Directory
+                $TestPath = Test-Path -Path "$PathLoc\Semester $Semester\$Class\Week $i\"
+                if ($TestPath -eq $false) {
+                    New-Item -Path "$PathLoc\Semester $Semester\$Class\" -Name "Week $i" -ItemType Directory
+                    if ($AssignmentFolderCheck -eq "W") {
+                        New-Item -Path "$PathLoc\Semester $Semester\$Class\Week $i" -Name "Assignments" -ItemType Directory
+                    }
+                    Write-Output "Created: Week folders"
+                    if ($AssignmentFolderCheck -eq "W") {
+                        Write-Output "Created Assignment folders in Week folders."
+                    }
                 }
-            }
-            Write-Output "Created: Week folders"
-            if ($AssignmentFolderCheck -eq "W") {
-                Write-Output "Created Assignment folders in Week folders."
             }
         }
         if ($AssignmentFolderCheck -eq "C") {
-            New-Item -Path "$PathLoc\Semester $Semester\$Class\" -Name "Assignments" -ItemType Directory
-            Write-Output "Created: Assignment folder"
+            $TestPath = Test-Path -Path "$PathLoc\Semester $Semester\$Class\Assignments\"
+            if ($TestPath -eq $false) {
+                New-Item -Path "$PathLoc\Semester $Semester\$Class\" -Name "Assignments" -ItemType Directory
+                Write-Output "Created: Assignment folder"
+            }
         }
     }
 } until (
