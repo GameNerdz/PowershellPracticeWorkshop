@@ -3,6 +3,8 @@
 # This script is probably useless to most but its something I currently need and its good practice.
 # Joseph Wahba
 
+#Requires -version 7
+
 $MusicFileTypes = @("*.mp3", "*.aac", "*.wav", "*.flac", "*.m4a")
 
 do {
