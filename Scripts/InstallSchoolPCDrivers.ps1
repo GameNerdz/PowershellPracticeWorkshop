@@ -78,7 +78,7 @@ Write-Host "Drivers: Audio"
 
 $DriverFolders = Get-ChildItem -Path "$PathLoc\Audio\" -Directory | Select-Object -ExpandProperty FullName
 foreach ($Folder in $DriverFolders) {
-    $SetupFile = Get-ChildItem -Path "$Folder/*" -File -Include "*Setup*.exe", "Dolby.exe"
+    $SetupFile = Get-ChildItem -Path "$Folder/*" -File -Include "*Setup*.exe", "Dolby*.exe"
     Write-Output "Installing $($SetupFile.FullName)"
     Start-Process -FilePath "$($SetupFile.FullName)" -Wait -NoNewWindow
 }
