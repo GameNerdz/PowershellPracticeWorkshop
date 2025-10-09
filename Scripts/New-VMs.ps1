@@ -1,4 +1,6 @@
-## Create VMs
+# Create VMs
+# Creates Hyper-V VM's with specific settings for College Class Labs.
+# Joseph Wahba
 param (
     $VMPath = "$($HOME)\Documents\HyperVM\",
     $VMVHD = "$($HOME)\Documents\HyperVM\",
