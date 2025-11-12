@@ -1,6 +1,7 @@
 # Create VMs
 # Creates Hyper-V VM's with specific settings for College Class Labs.
 # Joseph Wahba
+#Requires -RunAsAdministrator
 param (
     $VMPath = "$($HOME)\Documents\HyperVM\",
     $VMVHD = "$($HOME)\Documents\HyperVM\",
@@ -8,8 +9,6 @@ param (
     $VNet = "Default Switch",
     $VNetType
 )
-
-if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) { Start-Process powershell.exe "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs; exit }
 
 $VMname = Read-Host "Enter VM Name, Type end to end"
 if ($VNet -ne "Default Switch") {
